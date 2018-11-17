@@ -6,7 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <iostream>
+#include<stdbool.h>
 static bool keyBuffer[128];
 
 float ugao = 0.0;
@@ -14,11 +15,12 @@ float ugao = 0.0;
 float linix=0.0f;
 float liniz=-1.0f;
 float liniy=1.0f;
-float x1=0.0f, z1=5.0f;
-
+float x1=0.0f, z1=0.0f;
+GLdouble ykor=2.0;
 float deltaAngle = 0.0f;
 float deltaAngley = 0.0f;
 int xOrigin = -1;
+int i = 0;
 
 static void on_keyPress(unsigned char key, int x, int y);
 static void on_keyRelease(unsigned char key, int x, int y);
@@ -27,6 +29,9 @@ static void on_display(void);
 void mouseMove(int x, int y);
 void kretanje();
 void stairsFunc(int n);
+void ObjectFunc();
+void kolizija();
+
 int main(int argc, char **argv)
 {
 
@@ -160,7 +165,11 @@ void mouseMove(int x, int y) {
     deltaAngley = y *0.01f;
 		linix = sin(ugao + deltaAngle);
 		liniz = -cos(ugao + deltaAngle);
-    liniy = -tan(ugao + deltaAngley);
+      liniy = -tan(ugao + deltaAngley);
+    if(liniy > 20)
+      liniy = 20;
+    if(liniy < -20)
+      liniy = -20;
 }
 
 static void on_reshape(int width, int height)
@@ -169,62 +178,75 @@ static void on_reshape(int width, int height)
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(100, (float) width / height, 1, 100);
+    gluPerspective(90, (float) width / height, 1, 400);
+
 }
 
 static void on_display(void)
 {
-
-    /*if(z1>=-10.0f && z1<=-10.2f && x1>=1 && x1<=9)
-    {
-        z1=-3.8;
-        x1=-10;
-    }
-    if(z1>=-4.0f && z1<=-4.2f && x1>=-14 && x1<=-6)
-    {
-        z1=-9.8;
-        x1=5;
-    }*/
+    kolizija();
+    //std::cout << "x: " << x1 << "z: " << z1 <<std::endl;
     kretanje();
+    i = i + 1;
+    if(i==360)
+      i=0;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(x1,2.0f,z1,
-              x1+linix,liniy,z1+liniz,
+    gluLookAt(x1,ykor,z1,
+              x1+linix,ykor+liniy,z1+liniz,
               0.0f,1.0f,0.0f);
-
     GLfloat light_position[] = { 0, 0, 0, 1 };
     light_position[0] = 10;
         glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 
 
+        /*
+        glPushMatrix();
+          glScalef(-1,-1,-1);
+          glutSolidSphere(100, 100, 100);
+        glPopMatrix();
+        */
+
     glPushMatrix();
       glRotatef(180,1,0,0);
       glBegin(GL_QUADS);
-        glVertex3d(-20, 0, -20);
-        glVertex3d(20, 0,-20);
-        glVertex3d(20, 0,20);
-        glVertex3d(-20, 0,20);
+        glVertex3d(-40, 0, -40);
+        glVertex3d(40, 0,-40);
+        glVertex3d(40, 0,40);
+        glVertex3d(-40, 0,40);
       glEnd();
     glPopMatrix();
+
     glPushMatrix();
-      glTranslatef(0,20,0);
+      glTranslatef(0,40,0);
       glBegin(GL_QUADS);
-        glVertex3d(-20, -20, -20);
-        glVertex3d(-20, 20,-20);
-        glVertex3d(-20, 20,20);
-        glVertex3d(-20, -20,20);
+        glVertex3d(-40, -40, -40);
+        glVertex3d(-40, 40,-40);
+        glVertex3d(-40, 40,40);
+        glVertex3d(-40, -40,40);
+      glEnd();
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(0,40,0);
+      glRotatef(180,0,1,0);
+      glBegin(GL_QUADS);
+        glVertex3d(-40, -40, -40);
+        glVertex3d(-40, 40,-40);
+        glVertex3d(-40, 40,40);
+        glVertex3d(-40, -40,40);
       glEnd();
     glPopMatrix();
 
 
     glPushMatrix();
-      glTranslatef(0,20,0);
+      glTranslatef(0,40,0);
       glBegin(GL_QUADS);
-        glVertex3d(-20, -20, -20);
-        glVertex3d(20, -20,-20);
-        glVertex3d(20, 20,-20);
-        glVertex3d(-20, 20,-20);
+        glVertex3d(-40, -40, -40);
+        glVertex3d(40, -40,-40);
+        glVertex3d(40, 40,-40);
+        glVertex3d(-40, 40,-40);
       glEnd();
     glPopMatrix();
 
@@ -232,55 +254,117 @@ static void on_display(void)
 
     glPushMatrix();
       glRotatef(90, 0, 1, 0);
-      glTranslatef(-8,0.5,-19.8);
+      glTranslatef(-8,0.5,-39.5);
       stairsFunc(13);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-20,18,-19.8);
+      glTranslatef(-39.5,22,-39.5);
       glRotatef(90, 0, 0, 1);
       glRotatef(90, 1, 0, 0);
-      stairsFunc(15);
+      stairsFunc(20);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-20,34,-19.8);
+      glTranslatef(-39.5,39,-39.5);
       glRotatef(90, 0, 0, 1);
       glRotatef(90, 1, 0, 0);
       stairsFunc(10);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(16,0.5,-20);
+      glTranslatef(26,0.5,-38.5);
       stairsFunc(12);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(-19.5,35,15);
+      glTranslatef(-39.5,35,25);
       glRotatef(90, 0, 1, 0);
       glRotatef(180, 0, 0, 1);
       stairsFunc(13);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(16,35,-19.5);
+      glTranslatef(39.5,35,25);
+      glRotatef(-90, 0, 1, 0);
+      glRotatef(180, 0, 0, 1);
+      stairsFunc(17);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(39.5,35,25);
+      glRotatef(-90, 0, 1, 0);
+      stairsFunc(15);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(16,35,-39.5);
       glRotatef(180, 0, 0, 1);
       stairsFunc(5);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(5.5,35,15);
+      glTranslatef(16,35.5,-39.5);
+      stairsFunc(10);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-39.5,35,-8);
       glRotatef(90, 0, 1, 0);
+      glRotatef(180, 0, 0, 1);
+      stairsFunc(10);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-39.5,35.5,-8);
+      glRotatef(90, 0, 1, 0);
+      stairsFunc(15);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(5.5,35,25);
+      glRotatef(90, 0, 1, 0);
+      glScalef(4,1,70);
+      glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(39.5,25,0);
+      glRotatef(180, 0, 1, 0);
+      stairsFunc(20);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(39.5,25,-30);
       glScalef(4,1,20);
       glutSolidCube(1);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(16,35,0);
-      glScalef(4,1,34);
+      glTranslatef(39.5,10,-11.4);
+      glScalef(4,30,24);
       glutSolidCube(1);
     glPopMatrix();
 
+    glPushMatrix();
+      glTranslatef(39.5,10,5.5);
+      glScalef(4,69,10);
+      glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-20,35,-8);
+      glRotatef(90, 0, 1, 0);
+      glScalef(4,1,70);
+      glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(16,35,-7);
+      glScalef(4,1,60);
+      glutSolidCube(1);
+    glPopMatrix();
+/*
     glPushMatrix();
       glTranslatef(5,4,-10);
       glRotatef(90,1,0,0);
@@ -304,8 +388,59 @@ static void on_display(void)
         glVertex3d(-4, 0,4);
       glEnd();
     glPopMatrix();
+*/
+    glPushMatrix();
+      glTranslatef(0,40,90);
+      glRotatef(i,0,1,0);
+      ObjectFunc();
+    glPopMatrix();
+
 
     glutSwapBuffers();
+}
+
+void ObjectFunc()
+{
+    glPushMatrix();
+      glTranslatef(11,0,0);
+      glRotatef(30,0,0,1);
+      glScalef(1, 12, 1);
+      glutSolidCube(4);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(0,-19,0);
+      glRotatef(90,0,0,1);
+      glScalef(1, 12, 1);
+      glutSolidCube(4);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-11,0,0);
+      glRotatef(-30,0,0,1);
+      glScalef(1, 12, 1);
+      glutSolidCube(4);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(0,-5,0);
+      glutSolidSphere(7, 50, 50);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(21,-18,0);
+      glutSolidSphere(5, 50, 50);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-21,-18,0);
+      glutSolidSphere(5, 50, 50);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(0,18,0);
+      glutSolidSphere(5, 50, 50);
+    glPopMatrix();
 }
 
 void stairsFunc(int n)
@@ -318,4 +453,27 @@ void stairsFunc(int n)
       glutSolidCube(1);
     glPopMatrix();
   }
+}
+void kolizija()
+{
+if(ykor < 2.0)
+  ykor = 2.0;
+if(z1>=38.0f)
+    z1=38;
+if(z1<=-38.0f)
+    z1=-38;
+if(x1>=38.0f)
+    x1=38;
+if(x1<=-38.0f)
+    x1=-38;
+if(x1<=-23.0f && z1 < 10.5 && z1 > 6)
+  ykor =-(x1+22)+1;
+if(ykor > 2.5 && z1 >= 10.5)
+  z1=10.4;
+if(x1<=-23.0f && z1 <= 11.5 && z1 >=11 )
+  z1=11.5;
+if(ykor > 2.5 && z1 <= 6)
+  z1=6.1;
+if(x1<=-23.0f && z1 >= 4.5 && z1 <=5 )
+  z1=4.5;
 }
