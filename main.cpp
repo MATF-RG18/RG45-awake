@@ -405,37 +405,54 @@ static void on_display(void)
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(39.5,25,0);
+      glTranslatef(37.5,25,0);
       glRotatef(180, 0, 1, 0);
+      glScalef(1.5,1,1);
       stairsFunc(20);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(39.5,25,-30);
-      glScalef(4,1,20);
+      glTranslatef(39.55,25,-30);
+      glScalef(10,1,20);
       glutSolidCube(1);
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(39.5,10,-11.4);
-      glScalef(4,30,24);
+      glTranslatef(39.55,10,-11.4);
+      glScalef(10,30,24);
       glutSolidCube(1);
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(39.5,10,5.5);
-      glScalef(4,69,10);
+      glScalef(10,69,10);
       glutSolidCube(1);
     glPopMatrix();
+
     glPushMatrix();
       glTranslatef(-11,35,-8);
       glRotatef(90, 0, 1, 0);
       glScalef(4,1,50);
       glutSolidCube(1);
     glPopMatrix();
+
     glPushMatrix();
       glTranslatef(16,35,-7);
       glScalef(4,1,60);
+      glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-15.5,22,-35);
+      glRotatef(-90,0,0,1);
+      glScalef(10,1,10);
+      glutSolidCube(1);
+    glPopMatrix();
+
+    glPushMatrix();
+      glTranslatef(-23,39,-35);
+      glRotatef(-90,0,0,1);
+      glScalef(10,1,10);
       glutSolidCube(1);
     glPopMatrix();
     /*Portal1-izlaz*/
@@ -547,6 +564,60 @@ static void on_display(void)
       glEnd();
     glPopMatrix();
     /*Portal4-ulaz*/
+
+    /*Portal5-izlaz*/
+    glPushMatrix();
+      glTranslatef(-24,39,-35);
+      glRotatef(90,1,0,0);
+      glRotatef(-90,0,0,1);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal5-izlaz*/
+    /*Portal5-ulaz*/
+    glPushMatrix();
+      glTranslatef(-16.5,22,-35);
+      glRotatef(90,1,0,0);
+      glRotatef(-90,0,0,1);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal5-ulaz*/
+
+    /*Portal6-izlaz*/
+    glPushMatrix();
+      glTranslatef(-39,39,-25);
+      glRotatef(90,1,0,0);
+      glRotatef(90,0,0,1);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal6-izlaz*/
+    /*Portal6-ulaz*/
+    glPushMatrix();
+      glTranslatef(39,49,6);
+      glRotatef(90,1,0,0);
+      glRotatef(-90,0,0,1);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal6-ulaz*/
 
 
     glPushMatrix();
@@ -678,12 +749,12 @@ if(x1<=-38.0f)
   if(x1<=-23.0f && z1 <= 4.5 && z1>=4 && ykor < 3)
     z1=4;
 /*Prve stepenice*/
-  if(x1 >=36 && z1 <= 12.5 && z1>=9 && ykor < 3)
+  if(x1 >=33 && z1 <= 12.5 && z1>=9 && ykor < 3)
     z1 = 12.5;
-  if(x1 >=36 && z1 <= -24 && z1>=-25.2 && ykor < 3)
+  if(x1 >=33 && z1 <= -24 && z1>=-25.2 && ykor < 3)
     z1 = -25.2;
-  if(x1 >=35.7 && z1 <= 12.3 && z1>=-25.2 && ykor < 3)
-    x1 = 35.7;
+  if(x1 >=32.5 && z1 <= 12.3 && z1>=-25.2 && ykor < 3)
+    x1 = 32.5;
 /*Druge stepenice*/
   if(x1 <=27.5 && x1 >= 24.3 && z1 <= -24.5 && ykor >= 2 && ykor <= 19)
      ykor =-(z1+23.5)+1;
@@ -714,13 +785,13 @@ if(z1 >=26.8 && ykor >=17.5 && ykor <=32)
     ykor =(-x1+50)+1;
   if(x1 >= 22 && ykor <=25 && ykor >=12 && z1 >=26.8 && korj == -1.0f)
     z1 = 26.7;
-  if(x1 >= 22 && ykor <=25 && ykor >=12 && z1 <=23.7 && korj == -1.0f)
+  if(x1 >= 22 && ykor <=25 && ykor >=12 && z1 <=23.7 && z1 >=23.4 && korj == -1.0f)
     z1 = 23.8;
 /*Druge stepenice naopako*/
 if((z1 >=-5.9 || z1 <= -9.8) && x1 <= 14.5 && x1 >= 12 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
   x1 = 14.5;
 
-if(x1 >= 17 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
+if(x1 >= 17 && x1<=19 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
   x1 = 17;
 
 if(z1 >= -10.7 && z1 <= -9.7 && x1 <= 14.3 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
@@ -744,21 +815,21 @@ if(x1>=21 && z1 >=23.5 && z1<=27 && ykor >=38 && ykor <= 100)
   ykor =(x1+18)-1;
 if(x1 >= 22 && ykor >=36 && z1 >=26.8 )
   z1 = 26.7;
-if(x1 >= 22 && ykor >=36 &&  z1 <=23.7 )
+if(x1 >= 22 && ykor >=36 &&  z1 <=23.7 && z1 >=23.3)
   z1 = 23.8;
 if((z1 >=-5.9 || z1 <= -9.8) && x1 <= 14.5 && x1 >= 12 && z1 <=23 && ykor >=36)
   x1 = 14.5;
 
-if(x1 >= 17 && z1 <=23.4 && ykor >=36)
+if(x1 >= 17 && x1<=19 && z1 <=23.4 && ykor >=36)
   x1 = 17;
 
-if(z1 <= -9.7 && x1 <= 14.3 && z1 <=23.7 && ykor >=36)
+if(z1 <= -9.7 && x1 <= 14.3  && z1 <=23.7 && z1 >= -10 && ykor >=36)
   z1=-9.7;
 
   if(z1 >= -6.2 && x1 <= 14.3 && z1 <=23 && ykor >=36)
       z1=-6.2;
 
-if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1>=19 && ykor >=36)
+if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1 >= 23.3 && ykor >=36)
     z1 = 23.8;
 
 if(z1 >=26.8 && ykor >=36)
@@ -771,6 +842,35 @@ if(x1 >= 14.5 && x1 <= 17.5 && z1 <=-27.2 && ykor >=36)
   ykor =-(z1-10)+1;
 
 /*Gornji sprat*/
+
+/*Kosi svet*/
+if(x1 <= -20 && z1 <= -18 && ykor <= 23.5 && ykor >=20)
+  z1 = -(x1+56)-1;
+if(x1 <= -15 && z1 <= -18 && ykor >= 23 && ykor <=23.5)
+  ykor = 23;
+if(x1 <= -15 && z1 <= -18 && ykor >= 20 && ykor <=20.5)
+  ykor = 20.5;
+if(x1 >=-16.5 && z1 <= -18 && ykor <= 23.5 && ykor >=20)
+  x1=-16.5;
+
+if(x1 <= -27 && z1 <= -18 && ykor >= 37 && ykor <=41)
+  z1 = -(x1+63)-1;
+if(x1 <= -15 && z1 <= -18 && ykor >= 40.5 && ykor <=41)
+  ykor = 40.5;
+if(x1 <= -15 && z1 <= -18 && ykor >= 37 && ykor <=37.5)
+  ykor = 37.5;
+
+/*Kosi svet*/
+
+if(x1 <= 34 && x1 >= 33.5 && ykor >=20)
+  x1=34;
+if(z1 <= 11 && z1 >= 10.5  && ykor >=45)
+  z1=10.5;
+
+/*Stepenice cilj*/
+if(ykor <= 49 && ykor >16 && x1>=33 && z1 <= -1 && z1 >= -20)
+  ykor = (z1+51)-1;
+/*Stepenice cilj*/
 
 
 /*Portal1-Teleport*/
@@ -865,6 +965,56 @@ if(x1 >= -38.5 && x1 <= -37.5 && ykor <= 23 && ykor >= 18 && z1 <=-17 && z1>=-21
   x1 = -37;
 }
 /*Portal4-Teleport*/
+
+/*Portal5-Teleport*/
+if(x1 >= -17.5 && x1 <= -17 && ykor <= 25 && ykor >= 19 && z1 <=-35)
+{
+  z1 = -37;
+  ykor=39;
+  x1 = -26;
+
+  linix = sin((xrot+2*164)*0.01f);
+  liniy = -cos((xrot+2*164)*0.01f);
+  glutWarpPointer(xrot+2*164,yrot);
+}
+if(x1 >= -25 && x1 <= -24.5 && ykor <= 40 && ykor >= 35 && z1 <=-35)
+{
+  z1 = -37;
+  ykor=22.5;
+  x1 = -18;
+
+  linix = sin((xrot-2*164)*0.01f);
+  liniy = -cos((xrot-2*164)*0.01f);
+  glutWarpPointer(xrot-2*164,yrot);
+}
+/*Portal5-Teleport*/
+
+/*Portal6-Teleport*/
+if(x1 <= 38.5 && x1 >= 37.5 && ykor >= 48 && z1 <=9 && z1>=1)
+{
+  korj = 0;
+  korjz= 1;
+  z1 = -26.5;
+  ykor=38.5;
+  x1 = -37;
+
+  linix = sin((xrot+164)*0.01f);
+  liniy = -cos((xrot+164)*0.01f);
+  glutWarpPointer(xrot+164,yrot);
+
+}
+if(x1 >= -38.5 && x1 <= -38 && ykor <= 40 && ykor >= 35 && z1 <=-25)
+{
+  korjz=0;
+  korj=1;
+  z1 = 6;
+  ykor=48;
+  linix = sin((xrot-164)*0.01f);
+  liniz = -cos((xrot-164)*0.01f);
+  glutWarpPointer(xrot-164,yrot);
+  x1 = 37;
+}
+/*Portal6-Teleport*/
 
 
 }
