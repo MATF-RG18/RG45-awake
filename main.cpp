@@ -3,9 +3,6 @@
 #include "image.h"
 #include <vector>
 #include <algorithm>
-// #include <glm/glm.hpp>
-// #include <glm/gtc/matrix_transform.hpp>
-// #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include<stdbool.h>
 #include <vector>
@@ -16,8 +13,9 @@
 #define FILENAME3 "skybox/front.bmp"
 #define FILENAME4 "skybox/right.bmp"
 #define FILENAME5 "skybox/bottom.bmp"
+#define FILENAME6 "skybox/sun.bmp"
 static bool keyBuffer[128];
-static GLuint names[6];
+static GLuint names[7];
 using namespace std;
 
 float ugao = 0.0;
@@ -123,7 +121,7 @@ static void teksture(void)
   image = image_init(0, 0);
   image_read(image, FILENAME0);
 
-  glGenTextures(6, names);
+  glGenTextures(7, names);
 
   glBindTexture(GL_TEXTURE_2D, names[0]);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -166,6 +164,14 @@ static void teksture(void)
 
   image_read(image, FILENAME5);
   glBindTexture(GL_TEXTURE_2D, names[5]);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,image->width, image->height, 0,GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+
+  image_read(image, FILENAME6);
+  glBindTexture(GL_TEXTURE_2D, names[6]);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -223,6 +229,8 @@ static void on_keyRelease(unsigned char key, int x, int y)
 void kretanje()
 {
   float fraction = 0.2f;
+  if(z1 >= 240)
+    fraction = 0;
   if(korjz == 0)
   {
     if(keyBuffer[119])
@@ -232,7 +240,8 @@ void kretanje()
     }
     if(keyBuffer[97])
     {
-      fraction = 0.05f;
+      if(z1 <= 240)
+        fraction = 0.05f;
       x1-=deltaAngle*fraction*(-liniz);
       z1-=deltaAngle*fraction*linix;
     }
@@ -243,7 +252,8 @@ void kretanje()
     }
     if(keyBuffer[100])
     {
-      fraction = 0.05f;
+      if(z1 <= 240)
+        fraction = 0.05f;
       x1+=deltaAngle*fraction*(-liniz);
       z1+=deltaAngle*fraction*linix;
     }
@@ -351,9 +361,10 @@ static void on_display(void)
     GLfloat light_position2[] = { 0, 40, 0, 1 };
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightfv(GL_LIGHT1, GL_POSITION, light_position2);
-
+    glDisable(GL_CULL_FACE);
     glPushMatrix();
       glRotatef(180,1,0,0);
+      glRotatef(180,0,1,0);
       glBegin(GL_QUADS);
         glVertex3d(-40, 0, -40);
         glVertex3d(40, 0,-40);
@@ -375,6 +386,7 @@ static void on_display(void)
     glPushMatrix();
       glTranslatef(0,40,0);
       glRotatef(180,0,1,0);
+      glRotatef(180,1,0,0);
       glBegin(GL_QUADS);
         glVertex3d(-40, -40, -40);
         glVertex3d(-40, 40,-40);
@@ -393,7 +405,7 @@ static void on_display(void)
         glVertex3d(-40, 40,-40);
       glEnd();
     glPopMatrix();
-
+    glEnable(GL_CULL_FACE);
 
     glPushMatrix();
       glRotatef(90, 0, 1, 0);
@@ -491,8 +503,8 @@ static void on_display(void)
     glPopMatrix();
 
     glPushMatrix();
-      glTranslatef(39.5,10,5.5);
-      glScalef(10,69,10);
+      glTranslatef(39.5,22,5.5);
+      glScalef(10,45,10);
       glutSolidCube(1);
     glPopMatrix();
 
@@ -511,14 +523,14 @@ static void on_display(void)
 
     glPushMatrix();
       glTranslatef(-15.5,22,-35);
-      glRotatef(-90,0,0,1);
+      glRotatef(-270,0,0,1);
       glScalef(10,1,10);
       glutSolidCube(1);
     glPopMatrix();
 
     glPushMatrix();
       glTranslatef(-23,39,-35);
-      glRotatef(-90,0,0,1);
+      glRotatef(-270,0,0,1);
       glScalef(10,1,10);
       glutSolidCube(1);
     glPopMatrix();
@@ -686,14 +698,62 @@ static void on_display(void)
     glPopMatrix();
     /*Portal6-ulaz*/
 
+    /*Portal7-izlaz*/
+    glPushMatrix();
+      glTranslatef(16,50,-39);
+      glRotatef(-90,1,0,0);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal7-izlaz*/
+    /*Portal7-ulaz*/
+    glPushMatrix();
+      glTranslatef(16,25,-39);
+      glRotatef(-90,1,0,0);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal7-ulaz*/
+
+    /*Portal8-ulaz*/
+    glPushMatrix();
+      glTranslatef(36,30,-39.5);
+      glRotatef(-90,1,0,0);
+      glBegin(GL_QUADS);
+        glVertex3d(-4, 0, -4);
+        glVertex3d(4, 0,-4);
+        glVertex3d(4, 0,4);
+        glVertex3d(-4, 0,4);
+      glEnd();
+    glPopMatrix();
+    /*Portal8-ulaz*/
+
 
     glPushMatrix();
       glTranslatef(0,60,100);
       glRotatef(i,0,1,0);
+      glDisable(GL_LIGHTING);
+      glColor3f(0,0,0);
       quaSpin();
-      glutSolidSphere(7, 50, 50);
+      glEnable(GL_TEXTURE_2D);
+      GLUquadricObj *sunce = gluNewQuadric();
+      gluQuadricDrawStyle(sunce, GLU_FILL);
+      gluQuadricTexture(sunce, GL_TRUE);
+  		glBindTexture(GL_TEXTURE_2D, names[6]);
+  		gluQuadricNormals(sunce, GLU_SMOOTH);
+  		gluSphere(sunce,10,100,100);
+      glDisable(GL_TEXTURE_2D);
+      glEnable(GL_LIGHTING);
     glPopMatrix();
-
+    glDisable(GL_LIGHTING);
     glPushMatrix();
       glTranslatef(0,60,100);
       glRotatef(i,1,0,0);
@@ -717,9 +777,10 @@ static void on_display(void)
       glRotatef(i,1,0,1);
       quaSpin();
     glPopMatrix();
-
-    wallShatter();
+    glEnable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
+    wallShatter();
+
     glDisable(GL_LIGHTING);
     glEnable(GL_TEXTURE_2D);
     /*Skybox top*/
@@ -824,6 +885,7 @@ static void on_display(void)
       glEnd();
     /*Skybox bottom*/
 
+
     glBindTexture(GL_TEXTURE_2D, 0);
     glEnable(GL_CULL_FACE);
     glEnable(GL_LIGHTING);
@@ -901,7 +963,7 @@ void kolizija()
 /*Scene box*/
 if(ykor < 2.0)
   ykor = 2.0;
-if(z1>=38.0f)
+if(z1>=38.0f && z1<= 40.0f)
     z1=38;
 if(z1<=-38.0f)
     z1=-38;
@@ -911,14 +973,14 @@ if(x1<=-38.0f)
     x1=-38;
 /*Scene box*/
 /*Prve stepenice*/
-  if(x1<=-23.0f && z1 < 10.5 && z1 > 6 && ykor <=17.5)
+  if(x1<=-23.0f && z1 <= 10.5 && z1 >= 6 && ykor <=17.5)
     ykor =-(x1+22)+1;
 
-  if(x1<=-23.0f && z1 <= 11.5 && z1 >=9.5 && ykor < 17)
+  if(x1<=-23.0f && z1 <= 10 && z1 >=9.5 && ykor < 17 && ykor > 2.1)
     z1=9.5;
   if(x1<=-23.0f && z1 <= 12.5 && z1>=12 && ykor < 3)
       z1=12.5;
-  if(x1<=-23.0f && z1 <= 6.5 && z1 >=5.5 && ykor < 17)
+  if(x1<=-23.0f && z1 <= 6.5 && z1 >=5.5 && ykor < 17 && ykor > 2.1)
     z1=6.5;
   if(x1<=-23.0f && z1 <= 4.5 && z1>=4 && ykor < 3)
     z1=4;
@@ -948,11 +1010,11 @@ if(x1<=-38.0f)
   if(x1<=-23.0f && z1 >=23.5 && z1<=27 && ykor >=18 && ykor <=32)
     ykor =(x1+56)-1;
 /* Prve stepenice naopako */
-if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1>=19 && ykor >=17.7 && ykor <=32)
-  z1 = 23.8;
+if((x1 <= 14 || x1>=18)&& z1 <=24 && z1>=23.5 && ykor >=17.7 && ykor <=32)
+  z1 = 24;
 
-if(z1 >=26.8 && ykor >=17.5 && ykor <=32)
-  z1 = 26.7;
+if(z1 >=26.5 && z1<=27 && ykor >=17.5 && ykor <=32)
+  z1 = 26.5;
 
 /*Druge stepenice naopako*/
   if(x1>=19.0f && z1 >=23.5 && z1<=27 && ykor >=12 && ykor <=32)
@@ -987,7 +1049,7 @@ if(x1 >= 14.5 && x1 <= 17.5 && z1 <=-34.7 && ykor >=17.5 && ykor <=32)
 /*Gornji sprat*/
 if(x1>=21 && z1 >=23.5 && z1<=27 && ykor >=38 && ykor <= 100)
   ykor =(x1+18)-1;
-if(x1 >= 22 && ykor >=36 && z1 >=26.8 )
+if(x1 >= 22 && ykor >=36 && z1 >=26.8 && z1 <= 28)
   z1 = 26.7;
 if(x1 >= 22 && ykor >=36 &&  z1 <=23.7 && z1 >=23.3)
   z1 = 23.8;
@@ -1006,7 +1068,7 @@ if(z1 <= -9.7 && x1 <= 14.3  && z1 <=23.7 && z1 >= -10 && ykor >=36)
 if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1 >= 23.3 && ykor >=36)
     z1 = 23.8;
 
-if(z1 >=26.8 && ykor >=36)
+if(z1 >=26.8 && z1 <=28 && ykor >=36)
     z1 = 26.7;
 
 if(z1 >= -9.8 && z1 <= -6.1 && x1 <= -21.7 && z1 <=23.4 && ykor >=36)
@@ -1036,7 +1098,7 @@ if(x1 <= -15 && z1 <= -18 && ykor >= 37 && ykor <=37.5)
 
 /*Kosi svet*/
 
-if(x1 <= 34 && x1 >= 33.5 && ykor >=20)
+if(x1 <= 34 && x1 >= 33 && ykor >=20 && z1 <=12)
   x1=34;
 if(z1 <= 11 && z1 >= 10.5  && ykor >=45)
   z1=10.5;
@@ -1190,7 +1252,37 @@ if(x1 >= -38.5 && x1 <= -38 && ykor <= 40 && ykor >= 35 && z1 <=-25)
 }
 /*Portal6-Teleport*/
 
+/*Portal7-Teleport*/
+if(x1 >= 14 && x1 <= 18 && ykor >= 24 && ykor <= 29 && z1 >=-38.5 && z1<=-38)
+{
+  korj = 1.0f;
+  ykor=48;
+  linix = sin((xrot+2*165)*0.01f);
+  liniz = -cos((xrot+2*165)*0.01f);
+  glutWarpPointer(xrot+2*165,yrot);
+  liniy=-liniy;
+  z1 = -37.2;
+}
+if(x1 >= 14 && x1 <= 18 && ykor >= 48 && ykor<=50 && z1 >=-38.5 && z1<=-38)
+{
+  korj = -1.0f;
+  ykor= 29;
+  linix = sin((xrot-2*165)*0.01f);
+  liniz = -cos((xrot-2*165)*0.01f);
+  glutWarpPointer(xrot-2*165,yrot);
+  liniy=-liniy;
+  z1 = -37.2;
+}
+/*Portal7-Teleport*/
 
+/*Portal8-Teleport*/
+if(x1 >= 34 && x1 <= 38 && ykor >= 29 && ykor <= 33 && z1 >=-38.5 && z1<=-38)
+{
+  ykor=50;
+  x1 = 0;
+  z1 = 250;
+}
+/*Portal8-Teleport*/
 }
 
 void wallShatter()
