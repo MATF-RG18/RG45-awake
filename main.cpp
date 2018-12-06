@@ -13,7 +13,7 @@
 #define FILENAME3 "skybox/front.bmp"
 #define FILENAME4 "skybox/right.bmp"
 #define FILENAME5 "skybox/bottom.bmp"
-#define FILENAME6 "skybox/sun.bmp"
+#define FILENAME6 "skybox/moon.bmp"
 static bool keyBuffer[128];
 static GLuint names[7];
 using namespace std;
@@ -29,7 +29,7 @@ GLdouble korj=1.0f;
 GLdouble korjz=0;
 float deltaAngle = 0.0f;
 float deltaAngley = 0.0f;
-int i = 0;
+float i = 0;
 int xrot=1;
 int yrot=0;
 int l = 0;
@@ -348,7 +348,7 @@ static void on_display(void)
     kolizija();
     //std::cout << "x: " << x1 << " z: " << z1 <<" y: "<<ykor <<std::endl;
     kretanje();
-    i = i + 1;
+    i = i + 0.75;
     if(i==360)
       i=0;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
