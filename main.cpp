@@ -344,6 +344,9 @@ static void on_reshape(int width, int height)
 
 static void on_display(void)
 {
+
+
+
     glDisable(GL_TEXTURE_2D);
     kolizija();
     //std::cout << "x: " << x1 << " z: " << z1 <<" y: "<<ykor <<std::endl;
@@ -353,6 +356,12 @@ static void on_display(void)
       i=0;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    // gluLookAt(-40,17.5,25,
+    //           40,17.5,25,
+    //           0,-1,0);
+
+
     glLoadIdentity();
     gluLookAt(x1,ykor,z1,
               x1+linix,ykor+liniy,z1+liniz,
@@ -744,12 +753,12 @@ static void on_display(void)
       glColor3f(0,0,0);
       quaSpin();
       glEnable(GL_TEXTURE_2D);
-      GLUquadricObj *sunce = gluNewQuadric();
-      gluQuadricDrawStyle(sunce, GLU_FILL);
-      gluQuadricTexture(sunce, GL_TRUE);
+      GLUquadricObj *mjesec = gluNewQuadric();
+      gluQuadricDrawStyle(mjesec, GLU_FILL);
+      gluQuadricTexture(mjesec, GL_TRUE);
   		glBindTexture(GL_TEXTURE_2D, names[6]);
-  		gluQuadricNormals(sunce, GLU_SMOOTH);
-  		gluSphere(sunce,10,100,100);
+  		gluQuadricNormals(mjesec, GLU_SMOOTH);
+  		gluSphere(mjesec,10,100,100);
       glDisable(GL_TEXTURE_2D);
       glEnable(GL_LIGHTING);
     glPopMatrix();
@@ -1010,10 +1019,10 @@ if(x1<=-38.0f)
   if(x1<=-23.0f && z1 >=23.5 && z1<=27 && ykor >=18 && ykor <=32)
     ykor =(x1+56)-1;
 /* Prve stepenice naopako */
-if((x1 <= 14 || x1>=18)&& z1 <=24 && z1>=23.5 && ykor >=17.7 && ykor <=32)
+if((x1 <= 14 || x1>=18)&& z1 <=24 && z1>=23 && ykor >=17.7 && ykor <=32)
   z1 = 24;
 
-if(z1 >=26.5 && z1<=27 && ykor >=17.5 && ykor <=32)
+if(z1 >=26.5 && z1<=27.5 && ykor >=17.5 && ykor <=32)
   z1 = 26.5;
 
 /*Druge stepenice naopako*/
@@ -1030,7 +1039,7 @@ if((z1 >=-5.9 || z1 <= -9.8) && x1 <= 14.5 && x1 >= 12 && z1 <=23.7 && ykor >=17
 if(x1 >= 17 && x1<=19 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
   x1 = 17;
 
-if(z1 >= -10.7 && z1 <= -9.7 && x1 <= 14.3 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
+if(z1 >= -11.7 && z1 <= -9.7 && x1 <= 14.3 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
   z1=-9.7;
 
 if(z1 >= -6.2 && x1 <= 14.3 && z1 <=23.7 && ykor >=17.5 && ykor <=32)
@@ -1047,7 +1056,7 @@ if(x1 >= 14.5 && x1 <= 17.5 && z1 <=-34.7 && ykor >=17.5 && ykor <=32)
 /* Naopako */
 
 /*Gornji sprat*/
-if(x1>=21 && z1 >=23.5 && z1<=27 && ykor >=38 && ykor <= 100)
+if(x1>=21 && z1 >=23 && z1<=28 && ykor >=38 && ykor <= 100)
   ykor =(x1+18)-1;
 if(x1 >= 22 && ykor >=36 && z1 >=26.8 && z1 <= 28)
   z1 = 26.7;
@@ -1059,13 +1068,13 @@ if((z1 >=-5.9 || z1 <= -9.8) && x1 <= 14.5 && x1 >= 12 && z1 <=23 && ykor >=36)
 if(x1 >= 17 && x1<=19 && z1 <=23.4 && ykor >=36)
   x1 = 17;
 
-if(z1 <= -9.7 && x1 <= 14.3  && z1 <=23.7 && z1 >= -10 && ykor >=36)
+if(z1>=-11 && z1 <= -9.7 && x1 <= 14.3  && z1 <=23.7 && ykor >=36)
   z1=-9.7;
 
   if(z1 >= -6.2 && x1 <= 14.3 && z1 <=23 && ykor >=36)
       z1=-6.2;
 
-if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1 >= 23.3 && ykor >=36)
+if((x1 <= 14 || x1>=18)&& z1 <=23.7 && z1 >= 23 && ykor >=36)
     z1 = 23.8;
 
 if(z1 >=26.8 && z1 <=28 && ykor >=36)
