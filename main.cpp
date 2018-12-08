@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "image.h"
+#include "include/irrKlang.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -19,7 +20,8 @@ static GLuint names[7];
 using namespace std;
 
 float ugao = 0.0;
-
+irrklang::ISoundEngine* engine;
+int pause = 0;
 float linix=0.0f;
 float liniz=-1.0f;
 float liniy=-10.0f;
@@ -79,7 +81,10 @@ int main(int argc, char **argv)
     glutPassiveMotionFunc(mouseMove);
     glClearColor(0, 0, 0, 0);
     glEnable(GL_DEPTH_TEST);
-
+    engine = irrklang::createIrrKlangDevice();
+    engine->setSoundVolume(0.5f);
+    if(!engine)
+      return 0;
     teksture();
 
     glutSetCursor(GLUT_CURSOR_NONE);
@@ -101,11 +106,11 @@ int main(int argc, char **argv)
     glMaterialf(GL_FRONT, GL_SHININESS, shininess);
 
     //init_resources();
-    /*skybox*/
 
-
+    engine->play2D("gemno.mp3", true);
     glutMainLoop();
 
+    engine->drop();
     return 0;
 }
 
@@ -203,6 +208,18 @@ static void on_keyPress(unsigned char key, int x, int y)
         break;
     case 100:
         keyBuffer[100]=true;
+        break;
+    case 109:
+        if(pause == 0)
+        {
+            engine->setAllSoundsPaused(true);
+            pause = 1;
+        }
+        else
+        {
+            engine->setAllSoundsPaused(false);
+            pause = 0;
+        }
         break;
     }
 }
