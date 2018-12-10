@@ -72,7 +72,8 @@ int main(int argc, char **argv)
     glutInitWindowPosition(100, 100);
     glutCreateWindow(argv[0]);
     glutGameModeString("1366x768:32@60");
-    glutEnterGameMode();
+    if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
+        glutEnterGameMode();
     glutReshapeFunc(on_reshape);
     glutDisplayFunc(on_display);
     glutIdleFunc(on_display);

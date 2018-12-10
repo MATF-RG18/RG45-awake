@@ -2,7 +2,7 @@ PROGRAM = main
 CC      = g++
 CFLAGS  = -g -ansi -Wall -I/usr/X11R6/include -I/usr/pkg/include -lm
 LDFLAGS = -L/usr/X11R6/lib -L/usr/pkg/lib
-LDLIBS  = -lglut -lGLU -lGL -lGLEW ~/Desktop/Awake/RG45-awake/libIrrKlang.so -pthread
+LDLIBS  = -lglut -lGLU -lGL ${PWD}/libIrrKlang.so -pthread
 
 $(PROGRAM): main.o image.o
 	$(CC) $(LDFLAGS) -o $(PROGRAM) image.o main.o $(LDLIBS)
