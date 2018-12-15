@@ -7,6 +7,8 @@
 #include <iostream>
 #include<stdbool.h>
 #include <vector>
+#include <cstring>
+#include <string>
 #include <GL/glut.h>
 #define FILENAME0 "skybox/top.bmp"
 #define FILENAME1 "skybox/back.bmp"
@@ -17,8 +19,8 @@
 #define FILENAME6 "skybox/moon.bmp"
 static bool keyBuffer[128];
 static GLuint names[7];
+static GLuint portalTex[8];
 using namespace std;
-
 float ugao = 0.0;
 irrklang::ISoundEngine* engine;
 int pause = 0;
@@ -32,6 +34,8 @@ GLdouble korjz=0;
 float deltaAngle = 0.0f;
 float deltaAngley = 0.0f;
 float i = 0;
+int texNum = 0;
+int crt = 0;
 int xrot=1;
 int yrot=0;
 int l = 0;
@@ -47,7 +51,7 @@ void kolizija();
 void wallShatter();
 void troSpin();
 void quaSpin();
-
+void portali_draw();
 int main(int argc, char **argv)
 {
 
@@ -105,8 +109,6 @@ int main(int argc, char **argv)
     glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse_coeffs);
     glMaterialfv(GL_FRONT, GL_SPECULAR, specular_coeffs);
     glMaterialf(GL_FRONT, GL_SHININESS, shininess);
-
-    //init_resources();
 
     engine->play2D("gemno.mp3", true);
     glutMainLoop();
@@ -183,6 +185,24 @@ static void teksture(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,image->width, image->height, 0,GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+
+  glGenTextures(8, portalTex);
+  for(int i =0; i < 8;i++)
+    {
+        std::string line;
+        line += "skybox/portal/";
+        line += std::to_string(i);
+        line += ".bmp";
+        char* imete = new char[line.length()+1];
+        std::strcpy(imete,line.c_str());
+        image_read(image, imete);
+        glBindTexture(GL_TEXTURE_2D, portalTex[i]);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB,image->width, image->height, 0,GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+    }
 
   glBindTexture(GL_TEXTURE_2D, 0);
   image_done(image);
@@ -362,9 +382,6 @@ static void on_reshape(int width, int height)
 
 static void on_display(void)
 {
-
-
-
     glDisable(GL_TEXTURE_2D);
     kolizija();
     //std::cout << "x: " << x1 << " z: " << z1 <<" y: "<<ykor <<std::endl;
@@ -372,13 +389,16 @@ static void on_display(void)
     i = i + 0.75;
     if(i==360)
       i=0;
+    if(texNum == 8)
+      texNum = 0;
+    if(crt == 3)
+      crt=0;
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    // gluLookAt(-40,17.5,25,
-    //           40,17.5,25,
-    //           0,-1,0);
-
+    gluLookAt(-36,18.5,25,
+              36,18.5,25,
+              0,-1,0);
 
     glLoadIdentity();
     gluLookAt(x1,ykor,z1,
@@ -561,208 +581,18 @@ static void on_display(void)
       glScalef(10,1,10);
       glutSolidCube(1);
     glPopMatrix();
-    /*Portal1-izlaz*/
-    glPushMatrix();
-      glTranslatef(-39,17.5,25);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal1-izlaz*/
-    /*Portal1-ulaz*/
-    glPushMatrix();
-      glTranslatef(-39,17.5,8);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal1-ulaz*/
 
-    /*Portal2-izlaz*/
-    glPushMatrix();
-      glTranslatef(39,55,25);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glRotatef(180,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal2-izlaz*/
-    /*Portal2-ulaz*/
-    glPushMatrix();
-      glTranslatef(39,13.5,25);
-      glRotatef(90,1,0,0);
-      glRotatef(180,0,0,1);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal2-ulaz*/
-
-    /*Portal3-izlaz*/
-    glPushMatrix();
-      glTranslatef(26,17,-39);
-      glRotatef(90,1,0,0);
-      glRotatef(180,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal3-izlaz*/
-    /*Portal3-ulaz*/
-    glPushMatrix();
-      glTranslatef(-39,55,-8);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal3-ulaz*/
-
-    /*Portal4-izlaz*/
-    glPushMatrix();
-      glTranslatef(-39,20,-8);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal4-izlaz*/
-    /*Portal4-ulaz*/
-    glPushMatrix();
-      glTranslatef(-39,22,-19);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal4-ulaz*/
-
-    /*Portal5-izlaz*/
-    glPushMatrix();
-      glTranslatef(-24,39,-35);
-      glRotatef(90,1,0,0);
-      glRotatef(-90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal5-izlaz*/
-    /*Portal5-ulaz*/
-    glPushMatrix();
-      glTranslatef(-16.5,22,-35);
-      glRotatef(90,1,0,0);
-      glRotatef(-90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal5-ulaz*/
-
-    /*Portal6-izlaz*/
-    glPushMatrix();
-      glTranslatef(-39,39,-25);
-      glRotatef(90,1,0,0);
-      glRotatef(90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal6-izlaz*/
-    /*Portal6-ulaz*/
-    glPushMatrix();
-      glTranslatef(39,49,6);
-      glRotatef(90,1,0,0);
-      glRotatef(-90,0,0,1);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal6-ulaz*/
-
-    /*Portal7-izlaz*/
-    glPushMatrix();
-      glTranslatef(16,50,-39);
-      glRotatef(-90,1,0,0);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal7-izlaz*/
-    /*Portal7-ulaz*/
-    glPushMatrix();
-      glTranslatef(16,25,-39);
-      glRotatef(-90,1,0,0);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal7-ulaz*/
-
-    /*Portal8-ulaz*/
-    glPushMatrix();
-      glTranslatef(36,30,-39.5);
-      glRotatef(-90,1,0,0);
-      glBegin(GL_QUADS);
-        glVertex3d(-4, 0, -4);
-        glVertex3d(4, 0,-4);
-        glVertex3d(4, 0,4);
-        glVertex3d(-4, 0,4);
-      glEnd();
-    glPopMatrix();
-    /*Portal8-ulaz*/
-
+    glDisable(GL_LIGHTING);
+    glColor3f(0,0,0);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, portalTex[texNum]);
+    portali_draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+    if(crt == 2)
+      texNum++;
+    crt++;
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
 
     glPushMatrix();
       glTranslatef(0,60,100);
@@ -808,7 +638,14 @@ static void on_display(void)
     glDisable(GL_CULL_FACE);
     wallShatter();
 
+
     glDisable(GL_LIGHTING);
+    glPushMatrix();
+      glColor3f(0.2,0.2,0.2);
+      glTranslatef(0,48,250);
+      glScalef(6,0,6);
+      glutSolidCube(1);
+    glPopMatrix();
     glEnable(GL_TEXTURE_2D);
     /*Skybox top*/
     glBindTexture(GL_TEXTURE_2D, names[0]);
@@ -1383,4 +1220,177 @@ void wallShatter()
       glVertex3d(36, 16,40);
       glVertex3d(40,24,40);
     glEnd();
+}
+
+void portali_draw()
+{
+  /*Portal1-izlaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,17.5,25);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port1i = gluNewQuadric();
+    gluQuadricDrawStyle(port1i , GLU_FILL);
+    gluQuadricTexture(port1i , GL_TRUE);
+    gluQuadricNormals(port1i , GLU_SMOOTH);
+    gluDisk(port1i,0,5,100,100);
+  glPopMatrix();
+  /*----------------------*/
+  /*Portal1-izlaz*/
+  /*Portal1-ulaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,17.5,8);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port1u = gluNewQuadric();
+    gluQuadricDrawStyle(port1u , GLU_FILL);
+    gluQuadricTexture(port1u , GL_TRUE);
+    gluQuadricNormals(port1u , GLU_SMOOTH);
+    gluDisk(port1u,0,5,100,100);
+  glPopMatrix();
+  /*Portal1-ulaz*/
+
+  /*Portal2-izlaz*/
+  glPushMatrix();
+    glTranslatef(39.9,55,25);
+    glRotatef(-90,0,1,0);
+    GLUquadricObj *port2i = gluNewQuadric();
+    gluQuadricDrawStyle(port2i , GLU_FILL);
+    gluQuadricTexture(port2i , GL_TRUE);
+    glBindTexture(GL_TEXTURE_2D, portalTex[texNum]);
+    gluQuadricNormals(port2i , GLU_SMOOTH);
+    gluDisk(port2i,0,5,100,100);
+  glPopMatrix();
+  /*Portal2-izlaz*/
+  /*Portal2-ulaz*/
+  glPushMatrix();
+    glTranslatef(39.9,13.5,25);
+    glRotatef(-90,0,1,0);
+    GLUquadricObj *port2u = gluNewQuadric();
+    gluQuadricDrawStyle(port2u , GLU_FILL);
+    gluQuadricTexture(port2u , GL_TRUE);
+    gluQuadricNormals(port2u , GLU_SMOOTH);
+    gluDisk(port2u,0,5,100,100);
+  glPopMatrix();
+  /*Portal2-ulaz*/
+
+  /*Portal3-izlaz*/
+  glPushMatrix();
+    glTranslatef(26,17,-39.9);
+    GLUquadricObj *port3i = gluNewQuadric();
+    gluQuadricDrawStyle(port3i , GLU_FILL);
+    gluQuadricTexture(port3i , GL_TRUE);
+    gluQuadricNormals(port3i , GLU_SMOOTH);
+    gluDisk(port3i,0,5,100,100);
+  glPopMatrix();
+  /*Portal3-izlaz*/
+  /*Portal3-ulaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,55,-8);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port3u = gluNewQuadric();
+    gluQuadricDrawStyle(port3u , GLU_FILL);
+    gluQuadricTexture(port3u , GL_TRUE);
+    gluQuadricNormals(port3u , GLU_SMOOTH);
+    gluDisk(port3u,0,5,100,100);
+  glPopMatrix();
+  /*Portal3-ulaz*/
+
+  /*Portal4-izlaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,20,-8);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port4i = gluNewQuadric();
+    gluQuadricDrawStyle(port4i , GLU_FILL);
+    gluQuadricTexture(port4i , GL_TRUE);
+    gluQuadricNormals(port4i , GLU_SMOOTH);
+    gluDisk(port4i,0,5,100,100);
+  glPopMatrix();
+  /*Portal4-izlaz*/
+  /*Portal4-ulaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,22,-19);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port4u = gluNewQuadric();
+    gluQuadricDrawStyle(port4u , GLU_FILL);
+    gluQuadricTexture(port4u , GL_TRUE);
+    gluQuadricNormals(port4u , GLU_SMOOTH);
+    gluDisk(port4u,0,5,100,100);
+  glPopMatrix();
+  /*Portal4-ulaz*/
+
+  /*Portal5-izlaz*/
+  glPushMatrix();
+    glTranslatef(-24,39,-35);
+    glRotatef(-90,0,1,0);
+    GLUquadricObj *port5i = gluNewQuadric();
+    gluQuadricDrawStyle(port5i , GLU_FILL);
+    gluQuadricTexture(port5i , GL_TRUE);
+    gluQuadricNormals(port5i , GLU_SMOOTH);
+    gluDisk(port5i,0,5,100,100);
+  glPopMatrix();
+  /*Portal5-izlaz*/
+  /*Portal5-ulaz*/
+  glPushMatrix();
+    glTranslatef(-16.5,22,-35);
+    glRotatef(-90,0,1,0);
+    GLUquadricObj *port5u = gluNewQuadric();
+    gluQuadricDrawStyle(port5u , GLU_FILL);
+    gluQuadricTexture(port5u , GL_TRUE);
+    gluQuadricNormals(port5u , GLU_SMOOTH);
+    gluDisk(port5u,0,5,100,100);
+  glPopMatrix();
+  /*Portal5-ulaz*/
+  /*Portal6-izlaz*/
+  glPushMatrix();
+    glTranslatef(-39.9,39,-25);
+    glRotatef(90,0,1,0);
+    GLUquadricObj *port6i = gluNewQuadric();
+    gluQuadricDrawStyle(port6i , GLU_FILL);
+    gluQuadricTexture(port6i , GL_TRUE);
+    gluQuadricNormals(port6i , GLU_SMOOTH);
+    gluDisk(port6i,0,5,100,100);
+  glPopMatrix();
+  /*Portal6-izlaz*/
+  /*Portal6-ulaz*/
+  glPushMatrix();
+    glTranslatef(39.9,49,6);
+    glRotatef(-90,0,1,0);
+    GLUquadricObj *port6u = gluNewQuadric();
+    gluQuadricDrawStyle(port6u , GLU_FILL);
+    gluQuadricTexture(port6u , GL_TRUE);
+    gluQuadricNormals(port6u , GLU_SMOOTH);
+    gluDisk(port6u,0,5,100,100);
+  glPopMatrix();
+  /*Portal6-ulaz*/
+
+  /*Portal7-izlaz*/
+  glPushMatrix();
+    glTranslatef(16,50,-39.9);
+    GLUquadricObj *port7i = gluNewQuadric();
+    gluQuadricDrawStyle(port7i , GLU_FILL);
+    gluQuadricTexture(port7i , GL_TRUE);
+    gluQuadricNormals(port7i , GLU_SMOOTH);
+    gluDisk(port7i,0,5,100,100);
+  glPopMatrix();
+  /*Portal7-izlaz*/
+  /*Portal7-ulaz*/
+  glPushMatrix();
+    glTranslatef(16,25,-39.9);
+    GLUquadricObj *port7u = gluNewQuadric();
+    gluQuadricDrawStyle(port7u , GLU_FILL);
+    gluQuadricTexture(port7u , GL_TRUE);
+    gluQuadricNormals(port7u , GLU_SMOOTH);
+    gluDisk(port7u,0,5,100,100);
+  glPopMatrix();
+  /*Portal7-ulaz*/
+
+  /*Portal8-ulaz*/
+  glPushMatrix();
+    glTranslatef(36,30,-39.9);
+    GLUquadricObj *port8u = gluNewQuadric();
+    gluQuadricDrawStyle(port8u , GLU_FILL);
+    gluQuadricTexture(port8u , GL_TRUE);
+    gluQuadricNormals(port8u , GLU_SMOOTH);
+    gluDisk(port8u,0,5,100,100);
+  glPopMatrix();
+  /*Portal8-ulaz*/
 }
