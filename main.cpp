@@ -5,7 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
-#include<stdbool.h>
+#include  <stdbool.h>
 #include <vector>
 #include <cstring>
 #include <string>
@@ -1228,11 +1228,11 @@ void portali_draw()
   glPushMatrix();
     glTranslatef(-39.9,17.5,25);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port1i = gluNewQuadric();
-    gluQuadricDrawStyle(port1i , GLU_FILL);
-    gluQuadricTexture(port1i , GL_TRUE);
-    gluQuadricNormals(port1i , GLU_SMOOTH);
-    gluDisk(port1i,0,5,100,100);
+    GLUquadricObj *port = gluNewQuadric();
+    gluQuadricDrawStyle(port , GLU_FILL);
+    gluQuadricTexture(port , GL_TRUE);
+    gluQuadricNormals(port , GLU_SMOOTH);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*----------------------*/
   /*Portal1-izlaz*/
@@ -1240,11 +1240,7 @@ void portali_draw()
   glPushMatrix();
     glTranslatef(-39.9,17.5,8);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port1u = gluNewQuadric();
-    gluQuadricDrawStyle(port1u , GLU_FILL);
-    gluQuadricTexture(port1u , GL_TRUE);
-    gluQuadricNormals(port1u , GLU_SMOOTH);
-    gluDisk(port1u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal1-ulaz*/
 
@@ -1252,45 +1248,28 @@ void portali_draw()
   glPushMatrix();
     glTranslatef(39.9,55,25);
     glRotatef(-90,0,1,0);
-    GLUquadricObj *port2i = gluNewQuadric();
-    gluQuadricDrawStyle(port2i , GLU_FILL);
-    gluQuadricTexture(port2i , GL_TRUE);
-    glBindTexture(GL_TEXTURE_2D, portalTex[texNum]);
-    gluQuadricNormals(port2i , GLU_SMOOTH);
-    gluDisk(port2i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal2-izlaz*/
   /*Portal2-ulaz*/
   glPushMatrix();
     glTranslatef(39.9,13.5,25);
     glRotatef(-90,0,1,0);
-    GLUquadricObj *port2u = gluNewQuadric();
-    gluQuadricDrawStyle(port2u , GLU_FILL);
-    gluQuadricTexture(port2u , GL_TRUE);
-    gluQuadricNormals(port2u , GLU_SMOOTH);
-    gluDisk(port2u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal2-ulaz*/
 
   /*Portal3-izlaz*/
   glPushMatrix();
     glTranslatef(26,17,-39.9);
-    GLUquadricObj *port3i = gluNewQuadric();
-    gluQuadricDrawStyle(port3i , GLU_FILL);
-    gluQuadricTexture(port3i , GL_TRUE);
-    gluQuadricNormals(port3i , GLU_SMOOTH);
-    gluDisk(port3i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal3-izlaz*/
   /*Portal3-ulaz*/
   glPushMatrix();
     glTranslatef(-39.9,55,-8);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port3u = gluNewQuadric();
-    gluQuadricDrawStyle(port3u , GLU_FILL);
-    gluQuadricTexture(port3u , GL_TRUE);
-    gluQuadricNormals(port3u , GLU_SMOOTH);
-    gluDisk(port3u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal3-ulaz*/
 
@@ -1298,22 +1277,14 @@ void portali_draw()
   glPushMatrix();
     glTranslatef(-39.9,20,-8);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port4i = gluNewQuadric();
-    gluQuadricDrawStyle(port4i , GLU_FILL);
-    gluQuadricTexture(port4i , GL_TRUE);
-    gluQuadricNormals(port4i , GLU_SMOOTH);
-    gluDisk(port4i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal4-izlaz*/
   /*Portal4-ulaz*/
   glPushMatrix();
     glTranslatef(-39.9,22,-19);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port4u = gluNewQuadric();
-    gluQuadricDrawStyle(port4u , GLU_FILL);
-    gluQuadricTexture(port4u , GL_TRUE);
-    gluQuadricNormals(port4u , GLU_SMOOTH);
-    gluDisk(port4u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal4-ulaz*/
 
@@ -1321,76 +1292,48 @@ void portali_draw()
   glPushMatrix();
     glTranslatef(-24,39,-35);
     glRotatef(-90,0,1,0);
-    GLUquadricObj *port5i = gluNewQuadric();
-    gluQuadricDrawStyle(port5i , GLU_FILL);
-    gluQuadricTexture(port5i , GL_TRUE);
-    gluQuadricNormals(port5i , GLU_SMOOTH);
-    gluDisk(port5i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal5-izlaz*/
   /*Portal5-ulaz*/
   glPushMatrix();
     glTranslatef(-16.5,22,-35);
     glRotatef(-90,0,1,0);
-    GLUquadricObj *port5u = gluNewQuadric();
-    gluQuadricDrawStyle(port5u , GLU_FILL);
-    gluQuadricTexture(port5u , GL_TRUE);
-    gluQuadricNormals(port5u , GLU_SMOOTH);
-    gluDisk(port5u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal5-ulaz*/
   /*Portal6-izlaz*/
   glPushMatrix();
     glTranslatef(-39.9,39,-25);
     glRotatef(90,0,1,0);
-    GLUquadricObj *port6i = gluNewQuadric();
-    gluQuadricDrawStyle(port6i , GLU_FILL);
-    gluQuadricTexture(port6i , GL_TRUE);
-    gluQuadricNormals(port6i , GLU_SMOOTH);
-    gluDisk(port6i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal6-izlaz*/
   /*Portal6-ulaz*/
   glPushMatrix();
     glTranslatef(39.9,49,6);
     glRotatef(-90,0,1,0);
-    GLUquadricObj *port6u = gluNewQuadric();
-    gluQuadricDrawStyle(port6u , GLU_FILL);
-    gluQuadricTexture(port6u , GL_TRUE);
-    gluQuadricNormals(port6u , GLU_SMOOTH);
-    gluDisk(port6u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal6-ulaz*/
 
   /*Portal7-izlaz*/
   glPushMatrix();
     glTranslatef(16,50,-39.9);
-    GLUquadricObj *port7i = gluNewQuadric();
-    gluQuadricDrawStyle(port7i , GLU_FILL);
-    gluQuadricTexture(port7i , GL_TRUE);
-    gluQuadricNormals(port7i , GLU_SMOOTH);
-    gluDisk(port7i,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal7-izlaz*/
   /*Portal7-ulaz*/
   glPushMatrix();
     glTranslatef(16,25,-39.9);
-    GLUquadricObj *port7u = gluNewQuadric();
-    gluQuadricDrawStyle(port7u , GLU_FILL);
-    gluQuadricTexture(port7u , GL_TRUE);
-    gluQuadricNormals(port7u , GLU_SMOOTH);
-    gluDisk(port7u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal7-ulaz*/
 
   /*Portal8-ulaz*/
   glPushMatrix();
     glTranslatef(36,30,-39.9);
-    GLUquadricObj *port8u = gluNewQuadric();
-    gluQuadricDrawStyle(port8u , GLU_FILL);
-    gluQuadricTexture(port8u , GL_TRUE);
-    gluQuadricNormals(port8u , GLU_SMOOTH);
-    gluDisk(port8u,0,5,100,100);
+    gluDisk(port,0,5,100,100);
   glPopMatrix();
   /*Portal8-ulaz*/
 }
