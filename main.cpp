@@ -17,20 +17,26 @@
 #define FILENAME4 "skybox/right.bmp"
 #define FILENAME5 "skybox/bottom.bmp"
 #define FILENAME6 "skybox/moon.bmp"
+/*Bafer za tastaturu*/
 static bool keyBuffer[128];
+/*Nizovi za teksture*/
 static GLuint names[7];
 static GLuint portalTex[8];
+
 using namespace std;
 float ugao = 0.0;
 irrklang::ISoundEngine* engine;
 int pause = 0;
+/*Rotacije i kretanje*/
 float linix=0.0f;
 float liniz=-1.0f;
 float liniy=-10.0f;
 float x1=0.0f, z1=0.0f;
+/*Normale kamere*/
 GLdouble ykor=2.0;
 GLdouble korj=1.0f;
 GLdouble korjz=0;
+
 float deltaAngle = 0.0f;
 float deltaAngley = 0.0f;
 float i = 0;
@@ -73,7 +79,7 @@ int main(int argc, char **argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 
     glutInitWindowSize(1366, 768);
-    glutInitWindowPosition(100, 100);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow(argv[0]);
     glutGameModeString("1366x768:32@60");
     if (glutGameModeGet(GLUT_GAME_MODE_POSSIBLE))
@@ -117,6 +123,7 @@ int main(int argc, char **argv)
     return 0;
 }
 
+/*Ucitavanje tekstura*/
 static void teksture(void)
 {
   Image * image;
@@ -208,6 +215,7 @@ static void teksture(void)
   image_done(image);
 }
 
+
 static void on_keyPress(unsigned char key, int x, int y)
 {
 
@@ -263,7 +271,7 @@ static void on_keyRelease(unsigned char key, int x, int y)
         break;
     }
 }
-
+/*Kretanje*/
 void kretanje()
 {
   float fraction = 0.2f;
@@ -324,13 +332,13 @@ void kretanje()
   glutPostRedisplay();
 }
 
-
+/*Kontrola kamere*/
 void mouseMove(int x, int y) {
-  //std::cout << "x: " << x << " y: " << y << std::endl;
+  std::cout << "x: " << x << " y: " << y << std::endl;
   yrot=y;
   if(y<=495)
     glutWarpPointer(x,496);
-  if(x>=1311 || x<=55)
+  if(x>=1300 || x<=55)
     glutWarpPointer(1366/2,y);
   if(y>=760)
     glutWarpPointer(x,759);
@@ -379,7 +387,7 @@ static void on_reshape(int width, int height)
     gluPerspective(80, (float) width / height, 1, 1500);
 
 }
-
+/*on_display*/
 static void on_display(void)
 {
     glDisable(GL_TEXTURE_2D);
@@ -409,6 +417,7 @@ static void on_display(void)
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
     glLightfv(GL_LIGHT1, GL_POSITION, light_position2);
     glDisable(GL_CULL_FACE);
+    /*Prostorija*/
     glPushMatrix();
       glRotatef(180,1,0,0);
       glRotatef(180,0,1,0);
@@ -453,7 +462,9 @@ static void on_display(void)
       glEnd();
     glPopMatrix();
     glEnable(GL_CULL_FACE);
+    /*Prostorija*/
 
+    /*Stepenice*/
     glPushMatrix();
       glRotatef(90, 0, 1, 0);
       glTranslatef(-8,0.5,-39.5);
@@ -523,18 +534,21 @@ static void on_display(void)
       stairsFunc(15);
     glPopMatrix();
 
-    glPushMatrix();
-      glTranslatef(-2.5,35,25);
-      glRotatef(90, 0, 1, 0);
-      glScalef(4,1,44.5);
-      glutSolidCube(1);
-    glPopMatrix();
 
     glPushMatrix();
       glTranslatef(37.5,25,0);
       glRotatef(180, 0, 1, 0);
       glScalef(1.5,1,1);
       stairsFunc(20);
+    glPopMatrix();
+    /*Stepenice*/
+
+    /*Putevi*/
+    glPushMatrix();
+      glTranslatef(-2.5,35,25);
+      glRotatef(90, 0, 1, 0);
+      glScalef(4,1,44.5);
+      glutSolidCube(1);
     glPopMatrix();
 
     glPushMatrix();
@@ -581,7 +595,9 @@ static void on_display(void)
       glScalef(10,1,10);
       glutSolidCube(1);
     glPopMatrix();
+    /*Putevi*/
 
+    /*Portali*/
     glDisable(GL_LIGHTING);
     glColor3f(0,0,0);
     glEnable(GL_TEXTURE_2D);
@@ -593,7 +609,8 @@ static void on_display(void)
     crt++;
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_LIGHTING);
-
+    /*Portali*/
+    /*Mjesec*/
     glPushMatrix();
       glTranslatef(0,60,100);
       glRotatef(i,0,1,0);
@@ -616,7 +633,8 @@ static void on_display(void)
       glRotatef(i,1,0,0);
       quaSpin();
     glPopMatrix();
-
+    /*Mjesec*/
+    /*Omotac*/
     glPushMatrix();
       glTranslatef(0,60,100);
       glRotatef(i,0,0,1);
@@ -636,6 +654,7 @@ static void on_display(void)
     glPopMatrix();
     glEnable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
+    /*Omotac*/
     wallShatter();
 
 
@@ -756,30 +775,7 @@ static void on_display(void)
     glutSwapBuffers();
 }
 
-void troSpin()
-{
-  glPushMatrix();
-    glTranslatef(11,0,0);
-    glRotatef(30,0,0,1);
-    glScalef(1, 12, 1);
-    glutSolidCube(4);
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(0,-19,0);
-    glRotatef(90,0,0,1);
-    glScalef(1, 12, 1);
-    glutSolidCube(4);
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(-11,0,0);
-    glRotatef(-30,0,0,1);
-    glScalef(1, 12, 1);
-    glutSolidCube(4);
-  glPopMatrix();
-}
-
+/*Omotac*/
 void quaSpin()
 {
 
@@ -809,7 +805,8 @@ void quaSpin()
     glutSolidCube(4);
   glPopMatrix();
 }
-
+/*Omotac*/
+/*Stepenice*/
 void stairsFunc(int n)
 {
   for(int i=0;i<n;i++)
@@ -821,6 +818,8 @@ void stairsFunc(int n)
     glPopMatrix();
   }
 }
+/*Stepenice*/
+/*Kolizija*/
 void kolizija()
 {
 /*Base floor*/
@@ -1148,7 +1147,8 @@ if(x1 >= 34 && x1 <= 38 && ykor >= 29 && ykor <= 33 && z1 >=-38.5 && z1<=-38)
 }
 /*Portal8-Teleport*/
 }
-
+/*Kolizija*/
+/*Polomljen zid*/
 void wallShatter()
 {
     glBegin(GL_QUADS);
@@ -1221,7 +1221,8 @@ void wallShatter()
       glVertex3d(40,24,40);
     glEnd();
 }
-
+/*Polomljen zid*/
+/*Iscrtavanje portala*/
 void portali_draw()
 {
   /*Portal1-izlaz*/
@@ -1337,3 +1338,4 @@ void portali_draw()
   glPopMatrix();
   /*Portal8-ulaz*/
 }
+/*Iscrtavanje portala*/
