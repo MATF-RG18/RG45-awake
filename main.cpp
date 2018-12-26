@@ -223,22 +223,24 @@ static void on_keyPress(unsigned char key, int x, int y)
     case 27:
         exit(0);
         break;
-    case 32:
-        glutFullScreen();
-        break;
     case 119:
+    case 87:
         keyBuffer[119]=true;
         break;
     case 97:
+    case 65:
         keyBuffer[97]=true;
         break;
     case 115:
+    case 83:
         keyBuffer[115]=true;
         break;
     case 100:
+    case 68:
         keyBuffer[100]=true;
         break;
     case 109:
+    case 77:
         if(pause == 0)
         {
             engine->setAllSoundsPaused(true);
@@ -258,15 +260,19 @@ static void on_keyRelease(unsigned char key, int x, int y)
     float fraction = 0.5f;
     switch (key) {
     case 119:
+    case 87:
         keyBuffer[119]=false;
         break;
     case 97:
+    case 65:
         keyBuffer[97]=false;
         break;
     case 115:
+    case 83:
         keyBuffer[115]=false;
         break;
     case 100:
+    case 68:
         keyBuffer[100]=false;
         break;
     }
