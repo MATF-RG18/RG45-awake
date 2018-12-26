@@ -1,7 +1,7 @@
 # RG45-awake
 Awake
 
-### Controles:<br>
+### Controls:<br>
     Move: W,A,S,D
     Camera: Mouse
     Exit: Esc
