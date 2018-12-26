@@ -340,7 +340,7 @@ void kretanje()
 
 /*Kontrola kamere*/
 void mouseMove(int x, int y) {
-  std::cout << "x: " << x << " y: " << y << std::endl;
+  //std::cout << "x: " << x << " y: " << y << std::endl;
   yrot=y;
   if(y<=495)
     glutWarpPointer(x,496);

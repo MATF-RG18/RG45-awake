@@ -1,7 +1,7 @@
 PROGRAM = main
 CC      = g++
 CFLAGS  = -g -ansi -Wall -I/usr/X11R6/include -I/usr/pkg/include -lm
-CXXFLAGS = -Wno-write-strings
+CXXFLAGS = -Wno-write-strings -std=c++14
 LDFLAGS = -L/usr/X11R6/lib -L/usr/pkg/lib
 LDLIBS  = -lglut -lGLU -lGL ${PWD}/libIrrKlang.so -pthread
 
