@@ -22,29 +22,34 @@ static bool keyBuffer[128];
 /*Nizovi za teksture*/
 static GLuint names[7];
 static GLuint portalTex[8];
+int texNum = 0;
 
 using namespace std;
+/*Pocetni ugao*/
 float ugao = 0.0;
+/*Kontrola zvuka*/
 irrklang::ISoundEngine* engine;
 int pause = 0;
-/*Rotacije i kretanje*/
+/*Rotacije kamere*/
 float linix=0.0f;
 float liniz=-1.0f;
 float liniy=-10.0f;
+/*Kretanje kamere*/
 float x1=0.0f, z1=0.0f;
-/*Normale kamere*/
 GLdouble ykor=2.0;
+/*Normale kamere*/
 GLdouble korj=1.0f;
 GLdouble korjz=0;
-
+/*Pomeraji ugla*/
 float deltaAngle = 0.0f;
 float deltaAngley = 0.0f;
+/*Animacija omotaca*/
 float i = 0;
-int texNum = 0;
 int crt = 0;
 int xrot=1;
 int yrot=0;
 int l = 0;
+
 static void teksture(void);
 static void on_keyPress(unsigned char key, int x, int y);
 static void on_keyRelease(unsigned char key, int x, int y);
@@ -61,19 +66,13 @@ void portali_draw();
 int main(int argc, char **argv)
 {
 
-  GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 0.5 };
-
-  GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 0.5  };
-
-  GLfloat light_specular[] = { 0.8, 0.8, 0.8, 0.5  };
-
-  GLfloat ambient_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
-
-  GLfloat diffuse_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
-
-  GLfloat specular_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
-
-  GLfloat shininess = 20;
+    GLfloat light_ambient[] = { 0.1, 0.1, 0.1, 0.5 };
+    GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 0.5  };
+    GLfloat light_specular[] = { 0.8, 0.8, 0.8, 0.5  };
+    GLfloat ambient_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
+    GLfloat diffuse_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
+    GLfloat specular_coeffs[] = { 0.5 , 0.5 , 0.5 , 0.5  };
+    GLfloat shininess = 20;
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
